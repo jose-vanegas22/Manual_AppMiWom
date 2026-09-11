@@ -1,0 +1,41 @@
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--wom-purple);
+  color: white;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.brand {
+  font-weight: bold;
+  font-size: 1.1em;
+  letter-spacing: 0.5px;
+}
+
+.brand span {
+  color: var(--wom-magenta);
+}
+
+.topBarBtn {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.topBarBtn:hover {
+  background: var(--wom-magenta);
+}
