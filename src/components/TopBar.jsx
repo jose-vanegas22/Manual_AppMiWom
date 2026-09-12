@@ -9,7 +9,7 @@ export default function TopBar({ onGoToIndex }) {
         <span className={styles.suffix}> · Interactivo</span>
       </div>
       <button className={styles.topBarBtn} onClick={() => onGoToIndex(SLIDES.INDEX)}>
-        📑 Ir al Índice
+        Ir al Índice
       </button>
     </div>
   );

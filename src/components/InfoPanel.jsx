@@ -46,7 +46,7 @@ export default function InfoPanel({
       </div>
       <div className={styles.panelNavBtns}>
         <button className={styles.btnBack} style={{ flex: '1 1 100%' }} onClick={onGoToIndex}>
-          📑 Volver al Índice
+          Volver al Índice
         </button>
       </div>
     </div>
