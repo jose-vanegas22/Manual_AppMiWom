@@ -1,26 +1,23 @@
 import Slide from './Slide';
+import BackToIndexButton from './BackToIndexButton';
+import styles from './Introduccion.module.css';
 
-export default function IntroSlide({ isActive }) {
+export default function Introduccion({ isActive, onGoToIndex }) {
   return (
-    <Slide id="slide-intro" isActive={isActive}>
+    <Slide id="slide-intro" isActive={isActive} className={styles.introSlide}>
       <h2>Introducción</h2>
       <p>
-        MiWom es la aplicación móvil oficial de Wom: un canal digital centralizado de autogestión que
-        permite administrar tu línea, consultar consumos en tiempo real, adquirir productos, gestionar
-        métodos de pago y recibir soporte desde tu iPhone.
+        MiWom es la aplicación oficial de Wom para iOS, creada para que los usuarios puedan gestionar de
+        forma sencilla sus líneas móviles, consultar consumos, realizar pagos, adquirir productos y
+        acceder a herramientas como mapas de cobertura y puntos de atención.
       </p>
       <p>
-        Este manual interactivo recorre, paso a paso, todo el flujo real de la app: instalación desde la
-        App Store, inicio de sesión, compra de un paquete, pago en línea, medición de señal y preguntas
-        frecuentes.
+        El manual tiene como objetivo explicar, paso a paso, el uso de MiWom versión 4.9.5, incluyendo la
+        navegación, configuración y principales funcionalidades. Está dirigido a usuarios de iPhone, tanto
+        principiantes como avanzados, y no contempla problemas físicos del dispositivo, configuración
+        externa a la aplicación ni el uso de MiWom en Android.
       </p>
-      <ul style={{ textAlign: 'left', fontSize: '1.1em', color: '#333', maxWidth: 650, margin: '10px auto 0' }}>
-        <li>✅ 25 pantallas reales de la aplicación, en orden de uso.</li>
-        <li>✅ Navegación guiada mediante efecto "Spotlight" sobre la pantalla completa.</li>
-        <li>✅ Panel lateral con la explicación de cada paso, siempre visible y clickeable.</li>
-        <li>✅ Índice funcional: entra directo a la sección que necesitas y vuelve cuando quieras.</li>
-        <li>✅ Audio sintetizado (Web Audio API) para feedback de aciertos y errores.</li>
-      </ul>
+      <BackToIndexButton onClick={onGoToIndex} />
     </Slide>
   );
 }

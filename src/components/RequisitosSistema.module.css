@@ -1,0 +1,23 @@
+.requisitosSlide {
+  justify-content: flex-start;
+  padding-top: 130px;
+  overflow-y: auto;
+}
+
+.specList {
+  text-align: left;
+  max-width: 700px;
+  margin: 10px auto 0;
+  padding-left: 22px;
+  font-size: 1.1em;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.specList li {
+  margin-bottom: 12px;
+}
+
+.specList strong {
+  color: var(--wom-purple);
+}

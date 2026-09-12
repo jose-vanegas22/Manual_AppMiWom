@@ -4,12 +4,21 @@ import { useAudioFeedback } from './useAudioFeedback';
 
 export const SLIDES = {
   COVER: 0,
-  INTRO: 1,
-  INDEX: 2,
+  INDEX: 1,
+  INTRO: 2,
   SIMULATOR: 3,
+  REQUISITOS: 4,
+  SOLUCION_PROBLEMAS: 5,
+  MANTENIMIENTO: 6,
+  SOPORTE: 7,
+  GLOSARIO: 8,
+  APENDICES: 9,
 };
 
-const TOTAL_SLIDES = 4;
+// Solo Portada e Índice se recorren con los botones Anterior/Siguiente.
+// El resto de pantallas se abren desde una tarjeta del índice y se
+// vuelve con su propio botón "Volver al índice".
+const LINEAR_SLIDES = [SLIDES.COVER, SLIDES.INDEX];
 
 export function useTutorialEngine() {
   const [currentSlide, setCurrentSlide] = useState(SLIDES.COVER);
@@ -18,16 +27,27 @@ export function useTutorialEngine() {
   const [shakeCount, setShakeCount] = useState(0);
   const { playSuccessSound, playErrorSound } = useAudioFeedback();
 
+  const isLinearSlide = LINEAR_SLIDES.includes(currentSlide);
+  const linearIndex = LINEAR_SLIDES.indexOf(currentSlide);
+
   const goToSlide = useCallback((index) => {
     setCurrentSlide(index);
   }, []);
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((slide) => Math.min(slide + 1, TOTAL_SLIDES - 1));
+    setCurrentSlide((slide) => {
+      const idx = LINEAR_SLIDES.indexOf(slide);
+      if (idx === -1) return slide;
+      return LINEAR_SLIDES[Math.min(idx + 1, LINEAR_SLIDES.length - 1)];
+    });
   }, []);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((slide) => Math.max(slide - 1, 0));
+    setCurrentSlide((slide) => {
+      const idx = LINEAR_SLIDES.indexOf(slide);
+      if (idx === -1) return slide;
+      return LINEAR_SLIDES[Math.max(idx - 1, 0)];
+    });
   }, []);
 
   const loadStep = useCallback((index) => {
@@ -72,10 +92,12 @@ export function useTutorialEngine() {
 
   return {
     currentSlide,
-    totalSlides: TOTAL_SLIDES,
     goToSlide,
     nextSlide,
     prevSlide,
+    isLinearSlide,
+    linearIndex,
+    linearTotal: LINEAR_SLIDES.length,
     currentStep: tutorialSteps[currentStepIndex],
     currentStepIndex,
     totalSteps: tutorialSteps.length,

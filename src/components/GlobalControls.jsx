@@ -1,19 +1,18 @@
-import { SLIDES } from '../hooks/useTutorialEngine';
 import styles from './GlobalControls.module.css';
 
-export default function GlobalControls({ currentSlide, totalSlides, onPrev, onNext }) {
-  const isHidden = currentSlide === SLIDES.SIMULATOR;
+export default function GlobalControls({ isLinearSlide, linearIndex, linearTotal, onPrev, onNext }) {
+  if (!isLinearSlide) return null;
 
   return (
-    <div className={styles.controls} style={{ display: isHidden ? 'none' : 'flex' }}>
+    <div className={styles.controls}>
       <button
         className={`${styles.btnControl} ${styles.secondary}`}
         onClick={onPrev}
-        disabled={currentSlide === 0}
+        disabled={linearIndex === 0}
       >
         ◀ Anterior
       </button>
-      <button className={styles.btnControl} onClick={onNext} disabled={currentSlide === totalSlides - 1}>
+      <button className={styles.btnControl} onClick={onNext} disabled={linearIndex === linearTotal - 1}>
         Siguiente ▶
       </button>
     </div>

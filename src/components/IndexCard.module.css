@@ -32,20 +32,50 @@
   display: inline-block;
   background: var(--wom-purple);
   color: white;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+  min-width: 28px;
+  height: 24px;
+  border-radius: 12px;
   text-align: center;
-  line-height: 28px;
+  line-height: 24px;
   font-weight: bold;
   font-size: 13px;
   margin-bottom: 10px;
+  padding: 0 8px;
 }
 
-.stepsRange {
-  color: var(--wom-magenta);
+.stepsRange,
+.badge {
   font-size: 0.8em;
   font-weight: bold;
   margin-top: 8px;
   display: block;
+}
+
+.stepsRange {
+  color: var(--wom-magenta);
+}
+
+.badge {
+  color: #b08bcf;
+}
+
+.indexCard.disabled {
+  cursor: default;
+  background: #fafafa;
+  border-color: #ececec;
+}
+
+.indexCard.disabled:hover {
+  transform: none;
+  border-color: #ececec;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.indexCard.disabled .num {
+  background: #ccc;
+}
+
+.indexCard.disabled h3,
+.indexCard.disabled p {
+  color: #aaa;
 }

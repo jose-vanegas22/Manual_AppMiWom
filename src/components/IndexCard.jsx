@@ -1,15 +1,19 @@
-import { stageDescriptions } from '../data/tutorialSteps';
 import styles from './IndexCard.module.css';
 
-export default function IndexCard({ stage, order, onSelect }) {
+export default function IndexCard({ number, title, description, meta, disabled, onSelect }) {
   return (
-    <div className={styles.indexCard} onClick={() => onSelect(stage.firstIndex)}>
-      <span className={styles.num}>{order}</span>
-      <h3>{stage.name}</h3>
-      <p>{stageDescriptions[stage.name] || ''}</p>
-      <span className={styles.stepsRange}>
-        Pasos {stage.firstIndex + 1} - {stage.lastIndex + 1}
-      </span>
+    <div
+      className={`${styles.indexCard} ${disabled ? styles.disabled : ''}`}
+      onClick={disabled ? undefined : onSelect}
+    >
+      <span className={styles.num}>{number}</span>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      {(disabled || meta) && (
+        <span className={disabled ? styles.badge : styles.stepsRange}>
+          {disabled ? 'Próximamente' : meta}
+        </span>
+      )}
     </div>
   );
 }
