@@ -13,7 +13,7 @@ export default function Portada({ isActive }) {
       </p>
       <p>
         <strong>Autores y colaboradores:</strong> Jose David Vanegas Martinez, Wilson David Gómez Gómez,
-        Elkin, Jhonnier Hernandez.
+        Elkin Tovar, Jhonnier Albeiro Hernandez.
       </p>
     </Slide>
   );
