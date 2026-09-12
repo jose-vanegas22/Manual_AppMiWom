@@ -52,6 +52,13 @@ export default function App() {
     }
   }, [currentSlide, enterSimulatorIfNeeded]);
 
+  // En móvil el body puede hacer scroll; al cambiar de pantalla, el
+  // navegador a veces mantiene el scroll donde estaba el botón que se
+  // presionó (scroll anchoring). Volvemos siempre arriba.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentSlide]);
+
   const goToIndex = () => goToSlide(SLIDES.INDEX);
 
   return (

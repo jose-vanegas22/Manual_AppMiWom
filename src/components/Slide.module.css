@@ -15,6 +15,14 @@
   display: flex;
 }
 
+@media (max-width: 900px) {
+  .slide {
+    height: auto;
+    min-height: 100%;
+    padding: 66px 16px 90px;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

@@ -10,6 +10,14 @@
   flex-shrink: 0;
 }
 
+@media (max-width: 900px) {
+  .phoneContainer {
+    height: 60vh;
+    max-height: 520px;
+    max-width: 100%;
+  }
+}
+
 .phoneScreen {
   position: relative;
   width: 100%;

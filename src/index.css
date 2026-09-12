@@ -24,6 +24,20 @@ html {
   height: 100%;
 }
 
+@media (max-width: 900px) {
+  body,
+  html {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #root {
+    height: auto;
+  }
+}
+
 h1 {
   color: var(--wom-purple);
   font-size: 2.4em;

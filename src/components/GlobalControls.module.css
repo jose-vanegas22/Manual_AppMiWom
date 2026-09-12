@@ -9,6 +9,16 @@
   align-items: center;
 }
 
+@media (max-width: 900px) {
+  .controls {
+    position: static;
+    left: auto;
+    transform: none;
+    justify-content: center;
+    margin: 28px auto 0;
+  }
+}
+
 .btnControl {
   background-color: var(--wom-purple);
   color: white;
