@@ -52,7 +52,7 @@ export const manualOutline = [
       },
       {
         number: '5.3',
-        title: 'Cómo Activar el Pago Automático (Pago Automático)',
+        title: 'Cómo Activar el Pago Automático',
         type: 'stage',
         stageName: 'Cómo Activar el Pago Automático',
         description: 'Activa el cobro automático de tu plan cada mes.',
