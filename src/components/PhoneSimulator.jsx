@@ -6,6 +6,11 @@ export default function PhoneSimulator({ step, onSuccessClick, onErrorClick }) {
       <div className={styles.phoneScreen}>
         <img src={step.image} alt="Pantalla MiWom" />
         <div className={styles.errorLayer} onClick={onErrorClick} />
+        {step.hint === 'scroll-down' && (
+          <div className={styles.scrollHint} aria-hidden="true">
+            ↓
+          </div>
+        )}
         <div
           className={styles.spotlightTarget}
           onClick={onSuccessClick}

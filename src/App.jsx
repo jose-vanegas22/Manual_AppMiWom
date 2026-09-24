@@ -4,6 +4,7 @@ import GlobalControls from './components/GlobalControls';
 import Portada from './components/Portada';
 import Introduccion from './components/Introduccion';
 import RequisitosSistema from './components/RequisitosSistema';
+import AlcanceManual from './components/AlcanceManual';
 import SolucionProblemas from './components/SolucionProblemas';
 import MantenimientoActualizaciones from './components/MantenimientoActualizaciones';
 import SoporteTecnico from './components/SoporteTecnico';
@@ -18,6 +19,7 @@ import { useTutorialEngine, SLIDES } from './hooks/useTutorialEngine';
 const STATIC_SLIDES = {
   intro: SLIDES.INTRO,
   requisitos: SLIDES.REQUISITOS,
+  alcance: SLIDES.ALCANCE,
   solucion_problemas: SLIDES.SOLUCION_PROBLEMAS,
   mantenimiento: SLIDES.MANTENIMIENTO,
   soporte: SLIDES.SOPORTE,
@@ -73,6 +75,7 @@ export default function App() {
       />
       <Introduccion isActive={currentSlide === SLIDES.INTRO} onGoToIndex={goToIndex} />
       <RequisitosSistema isActive={currentSlide === SLIDES.REQUISITOS} onGoToIndex={goToIndex} />
+      <AlcanceManual isActive={currentSlide === SLIDES.ALCANCE} onGoToIndex={goToIndex} />
       <SolucionProblemas isActive={currentSlide === SLIDES.SOLUCION_PROBLEMAS} onGoToIndex={goToIndex} />
       <MantenimientoActualizaciones isActive={currentSlide === SLIDES.MANTENIMIENTO} onGoToIndex={goToIndex} />
       <SoporteTecnico isActive={currentSlide === SLIDES.SOPORTE} onGoToIndex={goToIndex} />

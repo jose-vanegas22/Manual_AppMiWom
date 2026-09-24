@@ -27,7 +27,7 @@ export default function InfoPanel({
       <h4 className={styles.title}>{step.title}</h4>
       <p className={styles.descText}>{step.desc}</p>
       <div className={styles.hintBox}>
-        👆 Haz clic dentro del recuadro resaltado en la pantalla para avanzar, o usa el botón "Siguiente
+        Haz clic dentro del recuadro resaltado en la pantalla para avanzar, o usa el botón "Siguiente
         paso".
       </div>
       <div className={styles.progressBarTrack}>

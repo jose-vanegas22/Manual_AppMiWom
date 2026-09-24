@@ -21,3 +21,17 @@
 .list strong {
   color: var(--wom-purple);
 }
+
+.link {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--wom-magenta);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid var(--wom-magenta);
+}
+
+.link:hover {
+  color: var(--wom-purple);
+  border-bottom-color: var(--wom-purple);
+}

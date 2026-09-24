@@ -57,6 +57,32 @@
   }
 }
 
+.scrollHint {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: none;
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  color: var(--wom-magenta);
+  text-shadow: 0 0 10px rgba(233, 0, 126, 0.8), 0 2px 6px rgba(0, 0, 0, 0.5);
+  animation: scrollHintBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes scrollHintBounce {
+  0%, 100% {
+    transform: translate(-50%, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, 14px);
+    opacity: 1;
+  }
+}
+
 .errorLayer {
   position: absolute;
   top: 0;

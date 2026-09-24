@@ -13,6 +13,7 @@ export const SLIDES = {
   SOPORTE: 7,
   GLOSARIO: 8,
   APENDICES: 9,
+  ALCANCE: 10,
 };
 
 // Solo Portada e Índice se recorren con los botones Anterior/Siguiente.
