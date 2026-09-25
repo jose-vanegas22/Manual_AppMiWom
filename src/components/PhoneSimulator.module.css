@@ -1,0 +1,94 @@
+.phoneContainer {
+  position: relative;
+  height: 80vh;
+  aspect-ratio: 739 / 1600;
+  background: black;
+  border-radius: 46px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  border: 12px solid #1a1a1a;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .phoneContainer {
+    height: 60vh;
+    max-height: 520px;
+    max-width: 100%;
+  }
+}
+
+.phoneScreen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  overflow: hidden;
+}
+
+.phoneScreen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  display: block;
+}
+
+.spotlightTarget {
+  position: absolute;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.72);
+  border: 3px solid var(--wom-magenta);
+  animation: pulse 1.5s infinite;
+  transition: all 0.3s ease;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(233, 0, 126, 0.45), 0 0 0 9999px rgba(0, 0, 0, 0.72);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(233, 0, 126, 0), 0 0 0 9999px rgba(0, 0, 0, 0.72);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(233, 0, 126, 0), 0 0 0 9999px rgba(0, 0, 0, 0.72);
+  }
+}
+
+.scrollHint {
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  pointer-events: none;
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  color: var(--wom-magenta);
+  text-shadow: 0 0 10px rgba(233, 0, 126, 0.8), 0 2px 6px rgba(0, 0, 0, 0.5);
+  animation: scrollHintBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes scrollHintBounce {
+  0%, 100% {
+    transform: translate(-50%, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, 14px);
+    opacity: 1;
+  }
+}
+
+.errorLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  cursor: not-allowed;
+}

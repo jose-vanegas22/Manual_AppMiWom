@@ -1,0 +1,37 @@
+.apendicesSlide {
+  justify-content: flex-start;
+  padding-top: 130px;
+  overflow-y: auto;
+}
+
+.list {
+  text-align: left;
+  max-width: 700px;
+  margin: 10px auto 0;
+  padding-left: 22px;
+  font-size: 1.1em;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.list li {
+  margin-bottom: 16px;
+}
+
+.list strong {
+  color: var(--wom-purple);
+}
+
+.link {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--wom-magenta);
+  font-weight: bold;
+  text-decoration: none;
+  border-bottom: 2px solid var(--wom-magenta);
+}
+
+.link:hover {
+  color: var(--wom-purple);
+  border-bottom-color: var(--wom-purple);
+}

@@ -1,0 +1,36 @@
+.indexSlide {
+  justify-content: flex-start;
+  padding-top: 96px;
+  overflow-y: auto;
+}
+
+.indexGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 950px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.divider {
+  grid-column: 1 / -1;
+  border-top: 2px dashed #e3e0ea;
+  margin: 12px 0;
+}
+
+.sectionTitle {
+  grid-column: 1 / -1;
+  color: var(--wom-purple);
+  text-align: left;
+  margin: 12px 0 -4px;
+  font-size: 1.2em;
+  border-top: 2px dashed #e3e0ea;
+  padding-top: 18px;
+}
+
+@media (max-width: 700px) {
+  .indexGrid {
+    grid-template-columns: 1fr;
+  }
+}

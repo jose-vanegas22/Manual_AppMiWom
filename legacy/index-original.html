@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Interactivo - MiWom</title>
+<style>
+    :root {
+        --wom-magenta: #e9007e;
+        --wom-purple: #3f1a63;
+        --wom-purple-light: #6b4e97;
+        --bg-color: #f4f4f9;
+        --text-color: #333;
+    }
+    * { box-sizing: border-box; }
+    body, html {
+        margin: 0; padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        height: 100%; overflow: hidden;
+    }
+
+    /* === BARRA SUPERIOR (Índice rápido) === */
+    .top-bar {
+        position: fixed; top: 0; left: 0; right: 0; height: 56px;
+        background: var(--wom-purple); color: white; z-index: 200;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .top-bar .brand { font-weight: bold; font-size: 1.1em; letter-spacing: 0.5px; }
+    .top-bar .brand span { color: var(--wom-magenta); }
+    .top-bar-btn {
+        background: rgba(255,255,255,0.15); color: white; border: none;
+        padding: 8px 16px; border-radius: 16px; cursor: pointer;
+        font-size: 13px; font-weight: bold; transition: 0.2s;
+    }
+    .top-bar-btn:hover { background: var(--wom-magenta); }
+
+    /* === CONTROLES DE PRESENTACIÓN (nivel superior) === */
+    .controls {
+        position: fixed; bottom: 20px; left: 50%;
+        transform: translateX(-50%); z-index: 150;
+        display: flex; gap: 15px; align-items: center;
+    }
+    .btn-control {
+        background-color: var(--wom-purple); color: white;
+        border: none; padding: 10px 22px; border-radius: 20px;
+        cursor: pointer; font-weight: bold; font-size: 14px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15); transition: 0.2s;
+    }
+    .btn-control:hover { background-color: var(--wom-magenta); }
+    .btn-control:disabled { background-color: #ccc; cursor: not-allowed; }
+    .btn-control.secondary { background-color: white; color: var(--wom-purple); border: 2px solid var(--wom-purple); }
+    .btn-control.secondary:hover { background-color: var(--wom-purple); color: white; }
+
+    /* === DIAPOSITIVAS === */
+    .slide {
+        display: none; height: 100%; width: 100%;
+        flex-direction: column; align-items: center; justify-content: center;
+        padding: 76px 40px 90px; box-sizing: border-box; text-align: center;
+        animation: fadeIn 0.4s ease-in-out;
+    }
+    .slide.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+    h1 { color: var(--wom-purple); font-size: 2.4em; margin-bottom: 8px; }
+    h2 { color: var(--wom-magenta); font-size: 1.7em; margin: 6px 0; }
+    p { color: var(--text-color); font-size: 1.15em; max-width: 750px; line-height: 1.6; }
+
+    /* === ÍNDICE === */
+    .index-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+        max-width: 950px; width: 100%; margin-top: 20px;
+    }
+    .index-card {
+        background: white; border: 2px solid #e3e0ea; border-radius: 16px;
+        padding: 22px 18px; cursor: pointer; text-align: left;
+        transition: 0.2s; box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .index-card:hover {
+        border-color: var(--wom-magenta); transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(233,0,126,0.18);
+    }
+    .index-card .num {
+        display: inline-block; background: var(--wom-purple); color: white;
+        width: 28px; height: 28px; border-radius: 50%; text-align: center;
+        line-height: 28px; font-weight: bold; font-size: 13px; margin-bottom: 10px;
+    }
+    .index-card h3 { color: var(--wom-purple); margin: 4px 0 6px; font-size: 1.15em; }
+    .index-card p { margin: 0; font-size: 0.92em; color: #666; max-width: none; }
+    .index-card .steps-range { color: var(--wom-magenta); font-size: 0.8em; font-weight: bold; margin-top: 8px; display: block; }
+
+    /* === LAYOUT DEL SIMULADOR === */
+    .demo-layout {
+        display: flex; align-items: center; justify-content: center;
+        gap: 40px; width: 100%; height: 100%; max-width: 1300px;
+    }
+
+    /* === MOCKUP DEL MÓVIL (grande, sin recortes) === */
+    .phone-container {
+        position: relative;
+        height: 80vh;
+        aspect-ratio: 739 / 1600;
+        background: black; border-radius: 46px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        border: 12px solid #1a1a1a; overflow: hidden;
+        flex-shrink: 0;
+    }
+    .phone-screen {
+        position: relative; width: 100%; height: 100%;
+        background-color: white; overflow: hidden;
+    }
+    .phone-screen img {
+        width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+        display: block;
+    }
+
+    /* === EFECTO SPOTLIGHT === */
+    .spotlight-target {
+        position: absolute; border-radius: 8px;
+        cursor: pointer; z-index: 10;
+        box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.72);
+        border: 3px solid var(--wom-magenta);
+        animation: pulse 1.5s infinite;
+        transition: all 0.3s ease;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(233, 0, 126, 0.45), 0 0 0 9999px rgba(0, 0, 0, 0.72); }
+        70% { box-shadow: 0 0 0 12px rgba(233, 0, 126, 0), 0 0 0 9999px rgba(0, 0, 0, 0.72); }
+        100% { box-shadow: 0 0 0 0 rgba(233, 0, 126, 0), 0 0 0 9999px rgba(0, 0, 0, 0.72); }
+    }
+
+    /* Capa interceptora de errores (queda DEBAJO del spotlight, nunca lo tapa) */
+    .error-layer {
+        position: absolute; top:0; left:0; right:0; bottom:0;
+        z-index: 5; cursor: not-allowed;
+    }
+
+    /* === PANEL LATERAL DE INFORMACIÓN (usa el espacio libre) === */
+    .info-panel {
+        width: 380px; flex-shrink: 0; text-align: left;
+        background: white; border-radius: 20px; padding: 28px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        display: flex; flex-direction: column; gap: 14px;
+        max-height: 80vh; overflow-y: auto;
+    }
+    .info-panel.shake { animation: shakePanel 0.4s; border: 2px solid #e74c3c; }
+    @keyframes shakePanel {
+        0% { transform: translateX(0); } 25% { transform: translateX(-6px); }
+        50% { transform: translateX(6px); } 75% { transform: translateX(-6px); } 100% { transform: translateX(0); }
+    }
+    .stage-label {
+        display: inline-block; background: var(--wom-purple); color: white;
+        font-size: 12px; font-weight: bold; padding: 5px 14px; border-radius: 12px;
+        letter-spacing: 0.5px; width: fit-content;
+    }
+    .info-panel h4 { margin: 0; color: var(--wom-magenta); font-size: 1.35em; line-height: 1.3; }
+    .info-panel .desc-text { margin: 0; font-size: 0.98em; color: #555; line-height: 1.55; max-width: none; }
+    .step-counter-panel { font-size: 12px; color: #999; font-weight: bold; margin-top: auto; }
+    .progress-bar-track { background: #eee; border-radius: 6px; height: 8px; overflow: hidden; }
+    .progress-bar-fill { background: linear-gradient(90deg, var(--wom-purple), var(--wom-magenta)); height: 100%; transition: width 0.3s ease; }
+
+    .hint-box {
+        background: #fdf1f8; border-left: 4px solid var(--wom-magenta);
+        padding: 10px 14px; border-radius: 8px; font-size: 0.85em; color: #7a2255;
+    }
+
+    .panel-nav-btns { display: flex; gap: 10px; margin-top: 6px; }
+    .panel-nav-btns button {
+        flex: 1; padding: 10px; border-radius: 10px; border: none;
+        font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s;
+    }
+    .panel-nav-btns .btn-back { background: #eee; color: #555; }
+    .panel-nav-btns .btn-back:hover { background: #ddd; }
+    .panel-nav-btns .btn-index { background: var(--wom-purple); color: white; }
+    .panel-nav-btns .btn-index:hover { background: var(--wom-magenta); }
+</style>
+</head>
+<body>
+
+<!-- BARRA SUPERIOR -->
+<div class="top-bar">
+    <div class="brand">Manual<span>MiWom</span> · Interactivo</div>
+    <button class="top-bar-btn" onclick="goToSlide(2)">📑 Ir al Índice</button>
+</div>
+
+<!-- SLIDE 0: PORTADA -->
+<div class="slide active" id="slide-0">
+    <h1>Manual de Usuario Interactivo</h1>
+    <h2>Aplicación MiWom (iOS)</h2>
+    <p><strong>Versión:</strong> 4.9.5</p>
+    <p><strong>Fecha:</strong> 10 de septiembre del 2026</p>
+    <p><strong>Autores y colaboradores:</strong> Jose David Vanegas Martinez, Wilson David Gómez Gómez, Elkin, Jhonnier Hernandez.</p>
+    <p><i>Un proyecto de autogestión digital, validación de interfaces y diseño centrado en el usuario.</i></p>
+</div>
+
+<!-- SLIDE 1: INTRODUCCIÓN -->
+<div class="slide" id="slide-1">
+    <h2>Introducción</h2>
+    <p>MiWom es la aplicación móvil oficial de Wom: un canal digital centralizado de autogestión que permite administrar tu línea, consultar consumos en tiempo real, adquirir productos, gestionar métodos de pago y recibir soporte desde tu iPhone.</p>
+    <p>Este manual interactivo recorre, paso a paso, todo el flujo real de la app: instalación desde la App Store, inicio de sesión, compra de un paquete, pago en línea, medición de señal y preguntas frecuentes.</p>
+    <ul style="text-align:left; font-size: 1.1em; color:#333; max-width: 650px; margin: 10px auto 0;">
+        <li>✅ 25 pantallas reales de la aplicación, en orden de uso.</li>
+        <li>✅ Navegación guiada mediante efecto "Spotlight" sobre la pantalla completa.</li>
+        <li>✅ Panel lateral con la explicación de cada paso, siempre visible y clickeable.</li>
+        <li>✅ Índice funcional: entra directo a la sección que necesitas y vuelve cuando quieras.</li>
+        <li>✅ Audio sintetizado (Web Audio API) para feedback de aciertos y errores.</li>
+    </ul>
+</div>
+
+<!-- SLIDE 2: ÍNDICE -->
+<div class="slide" id="slide-2">
+    <h2>Índice</h2>
+    <p style="margin-bottom:0;">Selecciona una sección para ir directo a su tutorial interactivo.</p>
+    <div class="index-grid" id="index-grid"></div>
+</div>
+
+<!-- SLIDE 3: SIMULADOR FUNCIONAL -->
+<div class="slide" id="slide-3">
+    <div class="demo-layout">
+        <div class="phone-container">
+            <div class="phone-screen" id="app-screen">
+                <img id="screen-img" src="" alt="Pantalla MiWom">
+                <div class="error-layer" onclick="handleErrorClick()"></div>
+                <div id="spotlight" class="spotlight-target" onclick="handleSuccessClick()"></div>
+            </div>
+        </div>
+
+        <div class="info-panel" id="info-panel">
+            <span class="stage-label" id="stage-label">Instalación</span>
+            <h4 id="tt-title">Título del paso</h4>
+            <p class="desc-text" id="tt-desc">Descripción del paso.</p>
+            <div class="hint-box">👆 Haz clic dentro del recuadro resaltado en la pantalla para avanzar, o usa el botón "Siguiente paso".</div>
+            <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill"></div></div>
+            <span class="step-counter-panel" id="tt-counter">Paso 1 de 25</span>
+            <div class="panel-nav-btns">
+                <button class="btn-back" onclick="goPrevStep()">◀ Paso anterior</button>
+                <button class="btn-index" onclick="goNextStep()">Siguiente paso ▶</button>
+            </div>
+            <div class="panel-nav-btns">
+                <button class="btn-back" style="flex:1 1 100%;" onclick="goToSlide(2)">📑 Volver al Índice</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTROLES INFERIORES (navegación entre portada / intro / índice) -->
+<div class="controls" id="global-controls">
+    <button class="btn-control secondary" id="btn-prev" onclick="prevSlide()">◀ Anterior</button>
+    <button class="btn-control" id="btn-next" onclick="nextSlide()">Siguiente ▶</button>
+</div>
+
+<script>
+    // === MOTOR DE AUDIO (Sintetizador Web Audio API) ===
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSuccessSound() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    function playErrorSound() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    }
+
+    // === CONFIGURACIÓN DE LOS PASOS DEL TUTORIAL (25 pasos - flujo completo) ===
+    const tutorialSteps = [
+        { stage: 'Instalación', image: 'images/step01.jpeg',
+          target: { top: '13%', left: '5%', width: '90%', height: '4%' },
+          title: '1. Abre la App Store', desc: 'Busca el ícono de App Store en tu iPhone y presiona la pestaña "Buscar" (lupa) en la esquina inferior derecha.' },
+        { stage: 'Instalación', image: 'images/step02.jpeg',
+          target: { top: '92%', left: '78%', width: '18%', height: '4%' },
+          title: '2. Escribe el nombre de la app', desc: 'Escribe "MiWom" en la barra de búsqueda y presiona la tecla de búsqueda del teclado.' },
+        { stage: 'Instalación', image: 'images/step03.jpeg',
+          target: { top: '17%', left: '82%', width: '12%', height: '5%' },
+          title: '3. Localiza la app oficial', desc: 'Identifica "Mi WOM" de WOM Colombia en los resultados y presiona el ícono de descarga (nube).' },
+        { stage: 'Instalación', image: 'images/step04.jpeg',
+          target: { top: '25%', left: '38%', width: '22%', height: '4%' },
+          title: '4. Presiona Obtener', desc: 'Toca el ícono de descarga para iniciar la instalación. Puede pedirte confirmar con Face ID, Touch ID o tu contraseña de Apple ID.' },
+        { stage: 'Instalación', image: 'images/step05.jpeg',
+          target: { top: '25%', left: '38%', width: '22%', height: '4%' },
+          title: '5. Espera la descarga', desc: 'La aplicación se descargará e instalará automáticamente en tu iPhone. El proceso solo toma unos segundos.' },
+        { stage: 'Instalación', image: 'images/step06.jpeg',
+          target: { top: '25%', left: '38%', width: '25%', height: '4%' },
+          title: '6. Abre la aplicación', desc: 'Cuando el botón cambie a "Abrir", presiónalo para iniciar MiWom por primera vez.' },
+        { stage: 'Instalación', image: 'images/step07.jpeg',
+          target: { top: '14%', left: '5%', width: '25%', height: '9%' },
+          title: '7. Encuentra el ícono en tu pantalla de inicio', desc: 'Una vez finalizada la instalación, el ícono de MiWom aparece automáticamente en la cuadrícula de aplicaciones de tu iPhone.' },
+
+        { stage: 'Inicio de sesión', image: 'images/step08.jpeg',
+          target: { top: '46%', left: '8%', width: '84%', height: '6%' },
+          title: '8. Ingresa tu línea Wom', desc: 'Selecciona el campo de número de celular y digita tu línea Wom de 10 dígitos.' },
+        { stage: 'Inicio de sesión', image: 'images/step09.jpeg',
+          target: { top: '38%', left: '22%', width: '56%', height: '6%' },
+          title: '9. Solicita tu código de acceso', desc: 'Con tu número digitado, presiona "Enviar código" para recibir un SMS de verificación.' },
+        { stage: 'Inicio de sesión', image: 'images/step10.jpeg',
+          target: { top: '59%', left: '8%', width: '68%', height: '5%' },
+          title: '10. Ingresa el código recibido', desc: 'Escribe el código numérico de seguridad que llegó por SMS y correo electrónico en las casillas correspondientes.' },
+        { stage: 'Inicio de sesión', image: 'images/step11.jpeg',
+          target: { top: '64%', left: '22%', width: '56%', height: '6%' },
+          title: '11. Confirma tu ingreso', desc: 'Cuando el código se valide (se pone en verde), presiona "Ingresar" para acceder a tu cuenta.' },
+        { stage: 'Inicio de sesión', image: 'images/step12.jpeg',
+          target: { top: '93%', left: '20%', width: '60%', height: '4%' },
+          title: '12. Omite ofertas promocionales (opcional)', desc: 'Tras iniciar sesión pueden aparecer ofertas o promociones. Puedes seleccionar "En otro momento" para continuar sin activarlas.' },
+        { stage: 'Inicio de sesión', image: 'images/step13.jpeg',
+          target: { top: '33%', left: '8%', width: '84%', height: '6%' },
+          title: '13. Explora el menú principal', desc: 'Desde el dashboard puedes gestionar tu línea, comprar recargas y paquetes, rastrear pedidos, pagar tu factura y más.' },
+
+        { stage: 'Comprar un paquete', image: 'images/step14.jpeg',
+          target: { top: '61%', left: '33%', width: '34%', height: '5%' },
+          title: '14. Elige y compra tu paquete', desc: 'Explora las categorías disponibles, revisa el precio y la vigencia del paquete, y presiona "Comprar" para continuar.' },
+
+        { stage: 'Pagar tu compra', image: 'images/step15.jpeg',
+          target: { top: '30%', left: '3%', width: '94%', height: '35%' },
+          title: '15. Selecciona tu método de pago', desc: 'Revisa el resumen de tu compra y elige el medio de pago de tu preferencia: Nequi, tarjeta de crédito, Daviplata o PSE.' },
+        { stage: 'Pagar tu compra', image: 'images/step16.jpeg',
+          target: { top: '56%', left: '8%', width: '84%', height: '6%' },
+          title: '16. Confirma tu método de pago', desc: 'Después de seleccionar el medio de pago, presiona "Ir a Pagar" para continuar con la transacción segura.' },
+        { stage: 'Pagar tu compra', image: 'images/step17.jpeg',
+          target: { top: '82%', left: '8%', width: '84%', height: '6%' },
+          title: '17. Autoriza el pago desde tu app bancaria', desc: 'Dirígete a las notificaciones de tu app de pago (ej. Nequi), acepta o rechaza la transacción y presiona "Finalizar Transacción" para confirmar.' },
+
+        { stage: 'Medir tu señal', image: 'images/step18.jpeg',
+          target: { top: '33%', left: '26%', width: '48%', height: '22%' },
+          title: '18. Diagnostica tu conexión', desc: 'Dirígete a la sección "Mide tu señal" y presiona el botón central "Iniciar" para comenzar el test de conectividad.' },
+        { stage: 'Medir tu señal', image: 'images/step19.jpeg',
+          target: { top: '33%', left: '26%', width: '48%', height: '22%' },
+          title: '19. Espera el resultado', desc: 'La aplicación realizará un test rápido de conectividad con la antena Wom más cercana a tu ubicación.' },
+        { stage: 'Medir tu señal', image: 'images/step20.jpeg',
+          target: { top: '33%', left: '26%', width: '48%', height: '22%' },
+          title: '20. Analizando tu señal', desc: 'Espera unos segundos mientras la app mide la latencia y las velocidades de bajada y subida de tu conexión.' },
+        { stage: 'Medir tu señal', image: 'images/step21.jpeg',
+          target: { top: '30%', left: '14%', width: '72%', height: '30%' },
+          title: '21. Resultado de velocidad de bajada', desc: 'La app muestra primero la velocidad de descarga (bajada) de tu conexión en tiempo real.' },
+        { stage: 'Medir tu señal', image: 'images/step22.jpeg',
+          target: { top: '30%', left: '14%', width: '72%', height: '30%' },
+          title: '22. Resultado de velocidad de subida', desc: 'A continuación se muestra la velocidad de subida, completando el diagnóstico de tu red.' },
+        { stage: 'Medir tu señal', image: 'images/step23.jpeg',
+          target: { top: '20%', left: '18%', width: '64%', height: '6%' },
+          title: '23. Reporte completo de tu señal', desc: 'Verás un reporte con bajada, subida, latencia, jitter y PLR, junto a la fecha de medición. Presiona "Volver a medir" cuando lo necesites.' },
+
+        { stage: 'Preguntas frecuentes', image: 'images/step24.jpeg',
+          target: { top: '18%', left: '8%', width: '84%', height: '8%' },
+          title: '24. Consulta las preguntas frecuentes', desc: 'Debajo del medidor encontrarás respuestas a dudas comunes: si las mediciones generan costo, si consumen datos o si son opcionales.' },
+        { stage: 'Preguntas frecuentes', image: 'images/step25.jpeg',
+          target: { top: '48%', left: '30%', width: '40%', height: '5%' },
+          title: '25. Amplía o resume la información', desc: 'Desplázate para ver más preguntas frecuentes, o presiona "Ver menos" para volver a la vista compacta. ¡Has completado el recorrido!' }
+    ];
+
+    // === SECCIONES PARA EL ÍNDICE (deduplicadas, en orden) ===
+    const stages = [];
+    tutorialSteps.forEach((s, i) => {
+        let existing = stages.find(st => st.name === s.stage);
+        if (!existing) {
+            stages.push({ name: s.stage, firstIndex: i, lastIndex: i, count: 1 });
+        } else {
+            existing.lastIndex = i;
+            existing.count++;
+        }
+    });
+    const stageDescriptions = {
+        'Instalación': 'Descarga e instala MiWom desde la App Store, paso a paso.',
+        'Inicio de sesión': 'Ingresa tu línea, valida el código SMS y entra a tu cuenta.',
+        'Comprar un paquete': 'Explora y compra el paquete que necesites.',
+        'Pagar tu compra': 'Selecciona tu método de pago y confirma la transacción.',
+        'Medir tu señal': 'Corre el test de conectividad y revisa tu reporte de red.',
+        'Preguntas frecuentes': 'Resuelve dudas comunes sobre las mediciones de señal.'
+    };
+
+    function buildIndex() {
+        const grid = document.getElementById('index-grid');
+        grid.innerHTML = '';
+        stages.forEach((stage, idx) => {
+            const card = document.createElement('div');
+            card.className = 'index-card';
+            card.onclick = () => goToStage(stage.firstIndex);
+            card.innerHTML = `
+                <span class="num">${idx + 1}</span>
+                <h3>${stage.name}</h3>
+                <p>${stageDescriptions[stage.name] || ''}</p>
+                <span class="steps-range">Pasos ${stage.firstIndex + 1} - ${stage.lastIndex + 1}</span>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function goToStage(stepIndex) {
+        goToSlide(3);
+        loadTutorialStep(stepIndex);
+    }
+
+    // === NAVEGACIÓN GENERAL ENTRE SLIDES ===
+    let currentSlide = 0;
+    const totalSlides = 4; // 0 portada, 1 intro, 2 índice, 3 simulador
+
+    function updateSlides() {
+        document.querySelectorAll('.slide').forEach((s, index) => {
+            s.classList.toggle('active', index === currentSlide);
+        });
+
+        const globalControls = document.getElementById('global-controls');
+        globalControls.style.display = (currentSlide === 3) ? 'none' : 'flex';
+
+        document.getElementById('btn-prev').disabled = currentSlide === 0;
+        document.getElementById('btn-next').disabled = currentSlide === totalSlides - 1;
+
+        if (currentSlide === 3 && !window.__tutorialStarted) {
+            window.__tutorialStarted = true;
+            loadTutorialStep(0);
+        }
+    }
+
+    function goToSlide(index) {
+        currentSlide = index;
+        updateSlides();
+    }
+
+    function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlides(); } }
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlides(); } }
+
+    // === LÓGICA DEL MOTOR DE TUTORIAL ===
+    let currentTutorialStep = 0;
+
+    function loadTutorialStep(stepIndex) {
+        if (stepIndex >= tutorialSteps.length) {
+            alert("¡Proceso completado exitosamente! Has recorrido todo el flujo de MiWom: instalación, inicio de sesión, compra, pago, medición de señal y preguntas frecuentes.");
+            stepIndex = tutorialSteps.length - 1;
+        }
+        if (stepIndex < 0) stepIndex = 0;
+
+        currentTutorialStep = stepIndex;
+        const step = tutorialSteps[currentTutorialStep];
+
+        document.getElementById('screen-img').src = step.image;
+        document.getElementById('stage-label').innerText = step.stage;
+
+        const spotlight = document.getElementById('spotlight');
+        spotlight.style.top = step.target.top;
+        spotlight.style.left = step.target.left;
+        spotlight.style.width = step.target.width;
+        spotlight.style.height = step.target.height;
+
+        document.getElementById('tt-title').innerText = step.title;
+        document.getElementById('tt-desc').innerText = step.desc;
+        document.getElementById('tt-counter').innerText = `Paso ${currentTutorialStep + 1} de ${tutorialSteps.length}`;
+        document.getElementById('progress-fill').style.width = `${((currentTutorialStep + 1) / tutorialSteps.length) * 100}%`;
+    }
+
+    function handleSuccessClick() {
+        playSuccessSound();
+        loadTutorialStep(currentTutorialStep + 1);
+    }
+
+    function handleErrorClick() {
+        playErrorSound();
+        const panel = document.getElementById('info-panel');
+        panel.classList.remove('shake');
+        void panel.offsetWidth;
+        panel.classList.add('shake');
+    }
+
+    function goNextStep() { playSuccessSound(); loadTutorialStep(currentTutorialStep + 1); }
+    function goPrevStep() { loadTutorialStep(currentTutorialStep - 1); }
+
+    // === INICIALIZAR ===
+    buildIndex();
+    updateSlides();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.introSlide {
+  justify-content: flex-start;
+  padding-top: 130px;
+  overflow-y: auto;
+}

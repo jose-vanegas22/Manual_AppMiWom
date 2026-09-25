@@ -1,0 +1,42 @@
+.solucionSlide {
+  justify-content: flex-start;
+  padding-top: 110px;
+  overflow-y: auto;
+}
+
+.list {
+  text-align: left;
+  max-width: 700px;
+  margin: 10px auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #e3e0ea;
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.problema {
+  margin: 0 0 6px;
+  font-size: 1.1em;
+  color: var(--wom-purple);
+}
+
+.solucion {
+  margin: 0;
+  font-size: 1.02em;
+  color: var(--text-color);
+  line-height: 1.55;
+}
+
+.solucion em {
+  color: var(--wom-magenta);
+  font-style: normal;
+  font-weight: bold;
+}
